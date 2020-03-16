@@ -2,6 +2,7 @@ package scheepers.robrecht.wmm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import kotlinx.android.synthetic.main.activity_finish_transaction.*
 import java.util.*
 
@@ -19,10 +20,11 @@ class FinishTransactionActivity : AppCompatActivity() {
         dateText.text =
             "${date.get(Calendar.DAY_OF_MONTH)}.${date.get(Calendar.MONTH)}.${date.get(Calendar.YEAR)}"
 
-        var amount = intent.getDoubleExtra(AMOUNT, 0.0)
-        amountText.text = amount?.toString()
+        amountText.text = intent.getDoubleExtra(AMOUNT, 0.0).toString()
 
-
-
+        val spinnerAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item,
+            listOf("Einkaufen", "Kinderkleidung", "Restaurant"))
+        spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        categorySpinner.adapter = spinnerAdapter
     }
 }
