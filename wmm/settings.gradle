@@ -1,0 +1,2 @@
+rootProject.name='wmm'
+include ':app'
