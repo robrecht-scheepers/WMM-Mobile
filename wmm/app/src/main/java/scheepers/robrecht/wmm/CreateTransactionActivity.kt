@@ -66,7 +66,7 @@ class CreateTransactionActivity : AppCompatActivity() {
         buttonContinue.setOnClickListener { v ->
             val intent = Intent(this, FinishTransactionActivity::class.java)
             if(amount != null) {
-                intent.putExtra("amount", amount)
+                intent.putExtra("amount", amount!!)
             }
             intent.putExtra("date", date)
             startActivity(intent)
@@ -80,6 +80,7 @@ class CreateTransactionActivity : AppCompatActivity() {
             outState.putDouble(AMOUNT, amount!!)
         }
         outState.putSerializable(DATE, date)
+        updateDateText()
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
@@ -88,17 +89,19 @@ class CreateTransactionActivity : AppCompatActivity() {
         if(savedInstanceState.containsKey(AMOUNT)) {
             amount = savedInstanceState.getDouble(AMOUNT)
         }
+        else{
+            amount = null
+        }
+        updateAmountText()
         date = savedInstanceState.getSerializable(DATE) as Calendar
     }
 
-    private fun updateDateText()
-    {
+    private fun updateDateText() {
         dateText.setText(
-            "${date.get(Calendar.YEAR)};${date.get(Calendar.MONTH)}.${date.get(Calendar.DAY_OF_MONTH)}")
+            "${date.get(Calendar.YEAR)}.${date.get(Calendar.MONTH)}.${date.get(Calendar.DAY_OF_MONTH)}")
     }
 
-    private fun updateAmount()
-    {
+    private fun updateAmount() {
         amount = try {
             if(amountText.text.isNotEmpty())
                 amountText.text.toString().toDouble()
@@ -107,5 +110,12 @@ class CreateTransactionActivity : AppCompatActivity() {
         } catch(e:NumberFormatException) {
             null
         }
+    }
+
+    private fun updateAmountText() {
+        if(amount == null)
+            amountText.setText("")
+        else
+            amountText.setText(amount.toString())
     }
 }
