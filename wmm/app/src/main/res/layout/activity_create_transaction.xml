@@ -118,7 +118,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:text="0"
-        app:layout_constraintBottom_toTopOf="@+id/button13"
+        app:layout_constraintBottom_toTopOf="@+id/buttonContinue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -132,7 +132,7 @@
         app:layout_constraintStart_toEndOf="@+id/button0" />
 
     <Button
-        android:id="@+id/button13"
+        android:id="@+id/buttonContinue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="32dp"
