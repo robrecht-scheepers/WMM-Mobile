@@ -28,5 +28,11 @@ class CreateTransactionActivity : AppCompatActivity() {
         findViewById<Button>(R.id.button7).setOnClickListener(numberButtonListener)
         findViewById<Button>(R.id.button8).setOnClickListener(numberButtonListener)
         findViewById<Button>(R.id.button9).setOnClickListener(numberButtonListener)
+        findViewById<Button>(R.id.buttonComma).setOnClickListener(numberButtonListener)
+
+        findViewById<Button>(R.id.buttonErase).setOnClickListener { v ->
+            if(amountText.text.isNotEmpty())
+                amountText.setText(amountText.text.substring(0,amountText.text.length - 1))
+        }
     }
 }

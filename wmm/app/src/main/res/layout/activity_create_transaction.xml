@@ -131,7 +131,7 @@
         android:id="@+id/buttonComma"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=","
+        android:text="."
         app:layout_constraintBaseline_toBaselineOf="@+id/button0"
         app:layout_constraintStart_toStartOf="@+id/button9" />
 </androidx.constraintlayout.widget.ConstraintLayout>
