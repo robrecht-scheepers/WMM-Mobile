@@ -2,15 +2,12 @@ package scheepers.robrecht.wmm
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_transaction.*
-import java.lang.NumberFormatException
 import java.util.*
 
 private const val LOGTAG: String = "CreateTransaction"
@@ -84,13 +81,12 @@ class CreateTransactionActivity : AppCompatActivity() {
     }
 
     override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        Log.d(LOGTAG, "onRestoreInstanceState")
         super.onRestoreInstanceState(savedInstanceState)
-
-        if(savedInstanceState.containsKey(AMOUNT)) {
-            amount = savedInstanceState.getDouble(AMOUNT)
-        }
-        else{
-            amount = null
+        amount = if(savedInstanceState.containsKey(AMOUNT)) {
+            savedInstanceState.getDouble(AMOUNT)
+        } else{
+            null
         }
         updateAmountText()
         date = savedInstanceState.getSerializable(DATE) as Calendar
