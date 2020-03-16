@@ -1,10 +1,13 @@
 package scheepers.robrecht.wmm
 
+import android.app.DatePickerDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import kotlinx.android.synthetic.main.activity_create_transaction.*
+import java.util.*
 
 class CreateTransactionActivity : AppCompatActivity() {
     private val amountText by lazy { findViewById<EditText>(R.id.amountText) };
@@ -34,5 +37,19 @@ class CreateTransactionActivity : AppCompatActivity() {
             if(amountText.text.isNotEmpty())
                 amountText.setText(amountText.text.substring(0,amountText.text.length - 1))
         }
+
+        findViewById<Button>(R.id.buttonDate).setOnClickListener { v ->
+            val c = Calendar.getInstance()
+            val year = c.get(Calendar.YEAR)
+            val month = c.get(Calendar.MONTH)
+            val day = c.get(Calendar.DAY_OF_MONTH)
+
+            val datePicker = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{v, y, m, d ->
+                dateText.setText("$d.$m.$y")}, year, month, day)
+            datePicker.show()
+        }
+
+
+
     }
 }

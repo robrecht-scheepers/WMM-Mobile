@@ -140,4 +140,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonDate"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="D"
+        app:layout_constraintBaseline_toBaselineOf="@+id/dateText"
+        app:layout_constraintStart_toEndOf="@+id/dateText" />
 </androidx.constraintlayout.widget.ConstraintLayout>
