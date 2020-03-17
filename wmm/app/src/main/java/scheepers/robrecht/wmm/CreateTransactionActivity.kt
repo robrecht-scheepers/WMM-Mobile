@@ -1,12 +1,117 @@
 package scheepers.robrecht.wmm
 
-import androidx.appcompat.app.AppCompatActivity
+import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.View
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import kotlinx.android.synthetic.main.activity_create_transaction.*
+import java.util.*
+
+private const val LOGTAG: String = "CreateTransaction"
+private const val AMOUNT: String = "amount"
+private const val DATE: String = "date"
 
 class CreateTransactionActivity : AppCompatActivity() {
+    private var date:Calendar = Calendar.getInstance()
+    private var amount:Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_transaction)
+
+        // numeric keypad button handlers
+        val numberButtonListener = View.OnClickListener { v ->
+            val btn = v as Button
+            amountText.append(btn.text)
+            updateAmount()
+        }
+        button0.setOnClickListener(numberButtonListener)
+        button1.setOnClickListener(numberButtonListener)
+        button2.setOnClickListener(numberButtonListener)
+        button3.setOnClickListener(numberButtonListener)
+        button4.setOnClickListener(numberButtonListener)
+        button5.setOnClickListener(numberButtonListener)
+        button6.setOnClickListener(numberButtonListener)
+        button7.setOnClickListener(numberButtonListener)
+        button8.setOnClickListener(numberButtonListener)
+        button9.setOnClickListener(numberButtonListener)
+        buttonComma.setOnClickListener(numberButtonListener)
+        buttonErase.setOnClickListener { v ->
+            if(amountText.text.isNotEmpty()) {
+                amountText.setText(amountText.text.substring(0, amountText.text.length - 1))
+                updateAmount()
+            }
+        }
+
+        // date
+        updateDateText()
+        buttonDate.setOnClickListener { v ->
+            val datePicker = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{
+                    v, y, m, d ->
+                run {
+                    date.set(y, m, d)
+                    updateDateText()
+                }
+            },date.get(Calendar.YEAR), date.get(Calendar.MONTH), date.get(Calendar.DAY_OF_MONTH))
+            datePicker.show()
+        }
+
+        // continue
+        buttonContinue.setOnClickListener { v ->
+            val intent = Intent(this, FinishTransactionActivity::class.java)
+            if(amount != null) {
+                intent.putExtra("amount", amount!!)
+            }
+            intent.putExtra("date", date)
+            startActivity(intent)
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d(LOGTAG, "onSaveInstanceState")
+        super.onSaveInstanceState(outState)
+        if(amount !=null) {
+            outState.putDouble(AMOUNT, amount!!)
+        }
+        outState.putSerializable(DATE, date)
+        updateDateText()
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        Log.d(LOGTAG, "onRestoreInstanceState")
+        super.onRestoreInstanceState(savedInstanceState)
+        amount = if(savedInstanceState.containsKey(AMOUNT)) {
+            savedInstanceState.getDouble(AMOUNT)
+        } else{
+            null
+        }
+        updateAmountText()
+        date = savedInstanceState.getSerializable(DATE) as Calendar
+    }
+
+    private fun updateDateText() {
+        dateText.setText(
+            "${date.get(Calendar.YEAR)}.${date.get(Calendar.MONTH)}.${date.get(Calendar.DAY_OF_MONTH)}")
+    }
+
+    private fun updateAmount() {
+        amount = try {
+            if(amountText.text.isNotEmpty())
+                amountText.text.toString().toDouble()
+            else
+                null
+        } catch(e:NumberFormatException) {
+            null
+        }
+    }
+
+    private fun updateAmountText() {
+        if(amount == null)
+            amountText.setText("")
+        else
+            amountText.setText(amount.toString())
     }
 }
