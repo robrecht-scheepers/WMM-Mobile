@@ -46,6 +46,13 @@ class FinishTransactionActivity : AppCompatActivity() {
             }
         }
 
+        sendButton.setOnClickListener {  }
+    }
+
+    private fun sendTransaction(){
+        val transaction = Transaction(date, amount, category, commentsText.text.toString())
+
         
     }
+
 }
