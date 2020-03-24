@@ -2,11 +2,18 @@ package scheepers.robrecht.wmm
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_finish_transaction.*
+import java.io.OutputStreamWriter
+import java.lang.StringBuilder
+import java.net.HttpURLConnection
+import java.net.URL
 import java.util.*
+import kotlinx.coroutines.*
 
 private const val LOGTAG: String = "FinishTransaction"
 private const val AMOUNT: String = "amount"
@@ -46,13 +53,29 @@ class FinishTransactionActivity : AppCompatActivity() {
             }
         }
 
-        sendButton.setOnClickListener {  }
+        sendButton.setOnClickListener { GlobalScope.launch{ sendTransaction() } }
     }
 
-    private fun sendTransaction(){
+    private suspend fun sendTransaction(){
+
         val transaction = Transaction(date, amount, category, commentsText.text.toString())
+        val postContent = Gson().toJson(transaction)
+        Log.d(LOGTAG, "Posting transaction as $postContent")
 
-        
+        val reply = StringBuilder()
+        val url = URL("https://localhost:44301/api/transaction")
+
+        with(url.openConnection() as HttpURLConnection)
+        {
+            requestMethod = "POST"
+            doOutput = true
+            OutputStreamWriter(outputStream).write(postContent)
+            inputStream.buffered().reader().use { reply.append(it.readText())}
+            Log.d(LOGTAG, "Received reply ${reply.toString()}")
+        }
+
     }
+
+
 
 }
