@@ -63,7 +63,7 @@ class FinishTransactionActivity : AppCompatActivity() {
         Log.d(LOGTAG, "Posting transaction as $postContent")
 
         val reply = StringBuilder()
-        val url = URL("https://localhost:44301/api/transaction")
+        val url = URL("https://10.0.2.2:44301/api/transaction")
 
         with(url.openConnection() as HttpURLConnection)
         {
